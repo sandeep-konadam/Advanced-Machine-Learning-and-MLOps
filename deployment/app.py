@@ -5,7 +5,7 @@ import numpy as np
 from huggingface_hub import hf_hub_download
 
 # *** UPDATE THIS TO YOUR HF USERNAME ***
-repo_id        = "sandy1916/Tourism-Prediction-Space"
+repo_id        = "sandy1916/tourism-prediction-model"
 model_filename = "tourism_best_model.joblib"
 
 # Load model from HF Model Hub
