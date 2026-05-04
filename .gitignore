@@ -41,14 +41,6 @@ mlflow.db
 *.pt
 *.pth
 
-# Data files (registered on HF Hub — not needed in repo)
-*.csv
-*.parquet
-*.json
-*.xlsx
-*.tsv
-data/
-
 # OS files
 .DS_Store
 Thumbs.db
