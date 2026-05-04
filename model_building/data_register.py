@@ -1,25 +1,26 @@
-import os
-import pandas as pd
-from datasets import Dataset
+from huggingface_hub.utils import RepositoryNotFoundError
 from huggingface_hub import HfApi, create_repo
+import os
 
 # *** UPDATE THIS TO YOUR HF USERNAME ***
-repo_id = "your-username/tourism-package-data"
+repo_id = "sandy1916/tourism-package-data"
 repo_type = "dataset"
 
+# Initialise API client using the HF_TOKEN secret
 api = HfApi(token=os.getenv("HF_TOKEN"))
 
-# Check if space exists, create if not
+# Check if the dataset repo exists; create if absent
 try:
     api.repo_info(repo_id=repo_id, repo_type=repo_type)
-    print(f"Space '{repo_id}' already exists.")
-except:
-    create_repo(repo_id=repo_id, repo_type=repo_type, exist_ok=True)
-    print(f"Created space '{repo_id}'.")
+    print(f"Dataset repo '{repo_id}' already exists. Using it.")
+except RepositoryNotFoundError:
+    create_repo(repo_id=repo_id, repo_type=repo_type, private=False, exist_ok=True)
+    print(f"Dataset repo '{repo_id}' created.")
 
-# Load local data and push to hub
-df = pd.read_csv('Advanced-Machine-Learning-and-MLOps/data/tourism.csv')
-hf_dataset = Dataset.from_pandas(df)
-hf_dataset.push_to_hub(repo_id, token=os.getenv("HF_TOKEN"))
-
+# Upload the data folder to the HF dataset hub
+api.upload_folder(
+    folder_path="Advanced-Machine-Learning-and-MLOps/data",
+    repo_id=repo_id,
+    repo_type=repo_type,
+)
 print(f"Data successfully registered at {repo_id}")
